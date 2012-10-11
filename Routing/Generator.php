@@ -34,7 +34,12 @@ class Generator
     {
         $appUrlGenerator = $this->getAppUrlGenerator($appName);
         $url = $appUrlGenerator->generate($name, $parameters);
-
+        
+        // inject container if listened
+        if (method_exists($appUrlGenerator, 'setContainer')) {
+            $appUrlGenerator->setContainer($this->container);
+        }
+        
         // Fix controller name
         $url = str_replace($this->container->getParameter('kernel.name'), $appName, $url);
 
